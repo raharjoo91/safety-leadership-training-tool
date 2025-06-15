@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safety Leadership Interactive Educational Tool</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        :root {
+            --primary-color: #1f4e79;
+            --secondary-color: #e67e22;
+            --accent-color: #27ae60;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .main-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            margin: 20px 0;
+            backdrop-filter: blur(10px);
+        }
+        
+        .nav-tabs .nav-link {
+            color: var(--primary-color);
+            border: none;
+            border-radius: 10px 10px 0 0;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-tabs .nav-link.active {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .nav-tabs .nav-link:hover {
+            background: var(--secondary-color);
+            color: white;
+            transform: translateY(-1px);
+        }
+        
+        .tab-content {
+            padding: 30px;
+        }
+        
+        .learning-objective {
+            background: linear-gradient(135deg, var(--accent-color), #2ecc71);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .key-concept {
+            background: #f8f9fa;
+            border-left: 5px solid var(--primary-color);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        
+        .interactive-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .interactive-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        
+        .leadership-pillar {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 10px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .leadership-pillar:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        .progress-indicator {
+            background: #e9ecef;
+            border-radius: 10px;
+            height: 10px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        
+        .progress-bar {
+            background: linear-gradient(90deg, var(--accent-color), #2ecc71);
+            height: 100%;
+            transition: width 0.5s ease;
+        }
+        
+        .scenario-card {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .btn-custom {
+            background: linear-gradient(135deg, var(--primary-color), #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            color: white;
+        }
+        
+        .culture-temple {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 30px 0;
+        }
+        
+        .temple-roof {
+            background: var(--primary-color);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .temple-pillars {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .temple-pillar {
+            background: var(--secondary-color);
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            min-width: 120px;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .temple-foundation {
+            background: var(--accent-color);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 800px;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="main-container">
+            <!-- Header -->
+            <div class="text-center p-4">
+                <h1 class="display-4 fw-bold text-primary">
+                    <i class="fas fa-shield-alt me-3"></i>
+                    Safety Leadership Excellence
+                </h1>
+                <p class="lead">Learning Tool for Safety Culture Development</p>
+            </div>
+            
+            <!-- Navigation Tabs -->
+            <ul class="nav nav-tabs nav-fill" id="mainTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="foundations-tab" data-bs-toggle="tab" data-bs-target="#foundations" type="button" role="tab">
+                        <i class="fas fa-foundation me-2"></i>Theory: Foundations
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="lead-model-tab" data-bs-toggle="tab" data-bs-target="#lead-model" type="button" role="tab">
+                        <i class="fas fa-compass me-2"></i>Theory: LEAD Model
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="characteristics-tab" data-bs-toggle="tab" data-bs-target="#characteristics" type="button" role="tab">
+                        <i class="fas fa-star me-2"></i>Practice: 7 Characteristics
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="scenarios-tab" data-bs-toggle="tab" data-bs-target="#scenarios" type="button" role="tab">
+                        <i class="fas fa-users me-2"></i>Practice: Scenarios
+                    </button>
+                </li>
+            </ul>
+            
+            <!-- Tab Content -->
+            <div class="tab-content" id="mainTabContent">
+                
+                <!-- Theory: Foundations Tab -->
+                <div class="tab-pane fade show active" id="foundations" role="tabpanel">
+                    <div class="learning-objective">
+                        <h3><i class="fas fa-foundation me-2"></i>Theoretical Foundations</h3>
+                        <p>Understanding the underlying principles that make safety leadership effective</p>
+                    </div>
+                    
+                    <div class="key-concept">
+                        <h4><i class="fas fa-lightbulb me-2"></i>What is Safety Leadership?</h4>
+                        <p><strong>Safety Leadership:</strong> How leaders support and influence people to enable strong organizational safety. Leadership is not about the attributes of individuals; it is about their actions.</p>
+                    </div>
+                    
+                    <div class="interactive-card">
+                        <h4>The Safety Culture Temple</h4>
+                        <p>Safety culture can be visualized as a temple, with foundational knowledge supporting visible leadership characteristics:</p>
+                        
+                        <div class="culture-temple">
+                            <div class="temple-roof">Safety Culture</div>
+                            <div class="temple-pillars">
+                                <div class="temple-pillar">Credibility</div>
+                                <div class="temple-pillar">Action Orientation</div>
+                                <div class="temple-pillar">Vision</div>
+                                <div class="temple-pillar">Accountability</div>
+                                <div class="temple-pillar">Communication</div>
+                                <div class="temple-pillar">Collaboration</div>
+                                <div class="temple-pillar">Feedback</div>
+                            </div>
+                            <div class="temple-foundation">
+                                <strong>Foundation:</strong> Understanding how systems cause accidents • People as resources • Balance of process and personal safety
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="interactive-card">
+                                <h5><i class="fas fa-cogs me-2"></i>Systems Thinking</h5>
+                                <p>Incidents are caused by system failures, not just individual errors. Leaders must understand:</p>
+                                <ul>
+                                    <li>Work as Imagined vs Work as Done</li>
+                                    <li>Latent conditions in systems</li>
+                                    <li>Human factors influences</li>
+                                </ul>
+                                <button class="btn btn-custom btn-sm" onclick="showSystemsExample()">View Example</button>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="interactive-card">
+                                <h5><i class="fas fa-users me-2"></i>People as Resources</h5>
+                                <p>People are not the problem - they are the solution. Key principles:</p>
+                                <ul>
+                                    <li>Mistakes are learning opportunities</li>
+                                    <li>Workers closest to hazards have insights</li>
+                                    <li>Trust enables speak-up culture</li>
+                                </ul>
+                                <button class="btn btn-custom btn-sm" onclick="showHumanFactorsBreakdown()">Human Factors</button>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="interactive-card">
+                                <h5><i class="fas fa-balance-scale me-2"></i>Balanced Approach</h5>
+                                <p>Balance process safety and personal safety:</p>
+                                <ul>
+                                    <li>High-frequency, low-consequence events</li>
+                                    <li>Low-frequency, high-consequence events</li>
+                                    <li>Leading vs lagging indicators</li>
+                                </ul>
+                                <button class="btn btn-custom btn-sm" onclick="showSafetyTriangle()">Safety Triangle</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="dynamicContent" class="mt-4"></div>
+                    
+                    <div class="key-concept">
+                        <h4><i class="fas fa-brain me-2"></i>Leadership Styles for Safety</h4>
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <div class="leadership-pillar" onclick="toggleLeadershipStyle('transformational')">
+                                    <h6><i class="fas fa-rocket me-2"></i>Transformational Leadership</h6>
+                                    <p class="mb-0">Inspires and motivates through vision and individual consideration</p>
+                                </div>
+                                <div id="transformational-details" class="collapse mt-2">
+                                    <div class="card card-body">
+                                        <ul>
+                                            <li><strong>Idealized Influence:</strong> Role modeling safety behaviors</li>
+                                            <li><strong>Inspirational Motivation:</strong> Creating compelling safety vision</li>
+                                            <li><strong>Intellectual Stimulation:</strong> Challenging safety assumptions</li>
+                                            <li><strong>Individual Consideration:</strong> Addressing personal safety needs</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="leadership-pillar" onclick="toggleLeadershipStyle('transactional')">
+                                    <h6><i class="fas fa-handshake me-2"></i>Transactional Leadership</h6>
+                                    <p class="mb-0">Establishes clear safety expectations and consequences</p>
+                                </div>
+                                <div id="transactional-details" class="collapse mt-2">
+                                    <div class="card card-body">
+                                        <ul>
+                                            <li><strong>Contingent Reward:</strong> Recognition for safe behaviors</li>
+                                            <li><strong>Active Management:</strong> Monitoring safety performance</li>
+                                            <li><strong>Clear Expectations:</strong> Defined safety standards</li>
+                                            <li><strong>Corrective Action:</strong> Addressing unsafe conditions</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="key-concept">
+                        <h4><i class="fas fa-quote-left me-2"></i>Key Insight</h4>
+                        <p class="h5 text-center fst-italic">"We get the culture we deserve through our leadership actions"</p>
+                        <p>Research shows that leadership has an especially high influence on workplace cultures. How we lead gives us the culture we want - or don't want.</p>
+                    </div>
+                </div>
+                
+                <!-- Theory: LEAD Model Tab -->
+                <div class="tab-pane fade" id="lead-model" role="tabpanel">
+                    <div class="learning-objective">
+                        <h3><i class="fas fa-compass me-2"></i>The LEAD Model</h3>
+                        <p>A comprehensive framework for situational safety leadership developed by Casey and Griffin (2021)</p>
+                    </div>
+                    
+                    <div class="key-concept">
+                        <h4><i class="fas fa-info-circle me-2"></i>LEAD Model Overview</h4>
+                        <p>The LEAD model recognizes that different situations require different safety leadership approaches. It provides four safety-related leadership practices:</p>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="interactive-card bg-info text-white" onclick="showLEADDetails('leverage')">
+                                <h5><i class="fas fa-lever me-2"></i>LEVERAGE</h5>
+                                <p>Setting safety goals, clarifying roles, coordinating teams, providing recognition</p>
+                                <small><strong>Best for:</strong> Routine work, low-risk environments</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="interactive-card bg-warning text-dark" onclick="showLEADDetails('energize')">
+                                <h5><i class="fas fa-bolt me-2"></i>ENERGIZE</h5>
+                                <p>Inspiring and empowering teams, encouraging ownership and autonomy</p>
+                                <small><strong>Best for:</strong> Changing environments, new opportunities</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="interactive-card bg-success text-white" onclick="showLEADDetails('adapt')">
+                                <h5><i class="fas fa-adjust me-2"></i>ADAPT</h5>
+                                <p>Creating flexibility, encouraging learning from mistakes, building resilience</p>
+                                <small><strong>Best for:</strong> Non-routine operations, incident management</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="interactive-card bg-danger text-white" onclick="showLEADDetails('defend')">
+                                <h5><i class="fas fa-shield-alt me-2"></i>DEFEND</h5>
+                                <p>Monitoring performance, instilling accountability, creating vigilance</p>
+                                <small><strong>Best for:</strong> High-risk work environments</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="leadDetails" class="mt-4"></div>
+                    
+                    <div class="interactive-card">
+                        <h5><i class="fas fa-sitemap me-2"></i>Situational Leadership Assessment</h5>
+                        <p>Select a scenario to see which LEAD approach is most appropriate:</p>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <button class="btn btn-outline-primary w-100 mb-2" onclick="assessSituation('routine')">
+                                    Daily Operations
+                                </button>
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn btn-outline-warning w-100 mb-2" onclick="assessSituation('change')">
+                                    Process Change
+                                </button>
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn btn-outline-success w-100 mb-2" onclick="assessSituation('emergency')">
+                                    Emergency Response
+                                </button>
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn btn-outline-danger w-100 mb-2" onclick="assessSituation('highrisk')">
+                                    High-Risk Work
+                                </button>
+                            </div>
+                        </div>
+                        <div id="situationAssessment" class="mt-3"></div>
+                    </div>
+                    
+                    <div class="key-concept">
+                        <h4><i class="fas fa-lightbulb me-2"></i>Key LEAD Principle</h4>
+                        <p class="h5 text-center fst-italic">"Effective safety leadership is situation-dependent"</p>
+                        <p>Leaders need to recognize opportunities to use the most appropriate leadership style for the situation, rather than applying a fixed approach to all environments.</p>
+                    </div>
+                </div>
+                
+                <!-- Practice: 7 Characteristics Tab -->
+                <div class="tab-pane fade" id="characteristics" role="tabpanel">
+                    <div class="learning-objective">
+                        <h3><i class="fas fa-star me-2"></i>The 7 Safety Leadership Characteristics</h3>
+                        <p>Practical application of research-based leadership behaviors that build strong safety cultures</p>
+                    </div>
+                    
+                    <div class="text-center mb-4">
+                        <div class="progress-indicator">
+                            <div class="progress-bar" id="characteristicProgress" style="width: 0%"></div>
+                        </div>
+                        <p id="progressText">Explore each characteristic to build your safety leadership toolkit</p>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <div class="interactive-card" onclick="exploreCharacteristic('credibility', this)">
+                                <h5><i class="fas fa-user-check me-2"></i>1. Credibility</h5>
+                                <p>What leaders say is consistent with what they do</p>
+                                <div class="characteristic-status" data-char="credibility">
+                                    <i class="fas fa-circle text-muted"></i> Click to explore
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="interactive-card" onclick="exploreCharacteristic('action', this)">
+                                <h5><i class="fas fa-running me-2"></i>2. Action Orientation</h5>
+                                <p>Leaders act to address unsafe conditions</p>
+                                <div class="characteristic-status" data-char="action">
+                                    <i class="fas fa-circle text-muted"></i> Click to explore
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="interactive-card" onclick="exploreCharacteristic('vision', this)">
+                                <h5><i class="fas fa-eye me-2"></i>3. Vision</h5>
+                                <p>Leaders paint a picture for safety excellence</p>
+                                <div class="characteristic-status" data-char="vision">
+                                    <i class="fas fa-circle text-muted"></i> Click to explore
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="interactive-card" onclick="exploreCharacteristic('accountability', this)">
+                                <h5><i class="fas fa-clipboard-check me-2"></i>4. Accountability</h5>
+                                <p>Leaders ensure employees take accountability for safety</p>
+                                <div class="characteristic-status" data-char="accountability">
+                                    <i class="fas fa-circle text-muted"></i> Click to explore
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="interactive-card" onclick="exploreCharacteristic('communication', this)">
+                                <h5><i class="fas fa-comments me-2"></i>5. Communication</h5>
+                                <p>How leaders communicate creates safety culture</p>
+                                <div class="characteristic-status" data-char="communication">
+                                    <i class="fas fa-circle text-muted"></i> Click to explore
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="interactive-card" onclick="exploreCharacteristic('collaboration', this)">
+                                <h5><i class="fas fa-handshake me-2"></i>6. Collaboration</h5>
+                                <p>Active employee participation in safety solutions</p>
+                                <div class="characteristic-status" data-char="collaboration">
+                                    <i class="fas fa-circle text-muted"></i> Click to explore
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3 mx-auto">
+                            <div class="interactive-card" onclick="exploreCharacteristic('feedback', this)">
+                                <h5><i class="fas fa-medal me-2"></i>7. Feedback & Recognition</h5>
+                                <p>Recognition that is positive, immediate, and certain</p>
+                                <div class="characteristic-status" data-char="feedback">
+                                    <i class="fas fa-circle text-muted"></i> Click to explore
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="characteristicDetails" class="mt-4"></div>
+                    
+                    <div class="interactive-card" id="characteristicSummary" style="display: none;">
+                        <h5><i class="fas fa-trophy me-2"></i>Congratulations!</h5>
+                        <p>You've explored all 7 safety leadership characteristics. Here's your personalized action plan:</p>
+                        <div id="actionPlan"></div>
+                        <button class="btn btn-custom" onclick="generateCertificate()">
+                            <i class="fas fa-certificate me-2"></i>Generate Learning Certificate
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Practice: Scenarios Tab -->
+                <div class="tab-pane fade" id="scenarios" role="tabpanel">
+                    <div class="learning-objective">
+                        <h3><i class="fas fa-theater-masks me-2"></i>Real-World Safety Leadership Scenarios</h3>
+                        <p>Apply your knowledge through interactive case studies based on actual workplace situations</p>
+                    </div>
+                    
+                    <div class="scenario-card">
+                        <h4><i class="fas fa-industry me-2"></i>Scenario 1: The Credible Maintenance Manager</h4>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p><strong>Situation:</strong> You're a maintenance manager visiting the production floor. An operator tells you they have real problems with valves passing hydrocarbons, making it difficult to vent receivers safely. The operator says passing valves are everywhere, causing isolation problems. They're not reporting them because "they keep getting low priority and nothing gets fixed."</p>
+                                
+                                <p><strong>Your Response Options:</strong></p>
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-outline-primary scenario-btn" onclick="handleScenario('s1', 'dismiss')">
+                                        A) Tell the operator this isn't a priority right now
+                                    </button>
+                                    <button class="btn btn-outline-primary scenario-btn" onclick="handleScenario('s1', 'investigate')">
+                                        B) Thank them and investigate the valve issue systematically
+                                    </button>
+                                    <button class="btn btn-outline-primary scenario-btn" onclick="handleScenario('s1', 'blame')">
+                                        C) Ask why operators aren't following proper procedures
+                                    </button>
+                                    <button class="btn btn-outline-primary scenario-btn" onclick="handleScenario('s1', 'training')">
+                                        D) Schedule additional safety training for the crew
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card bg-light">
+                                    <div class="card-body">
+                                        <h6><i class="fas fa-lightbulb me-2"></i>Think About:</h6>
+                                        <ul class="small">
+                                            <li>Building credibility</li>
+                                            <li>Understanding system issues</li>
+                                            <li>Encouraging speak-up culture</li>
+                                            <li>Taking action orientation</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="s1-feedback"></div>
+                    </div>
+                    
+                    <div class="scenario-card">
+                        <h4><i class="fas fa-phone me-2"></i>Scenario 2: The Action-Oriented Operations Manager</h4>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p><strong>Situation:</strong> You receive a call about a toxic product leak that may have been occurring for months. The leak detection equipment wasn't working and nobody raised the issue. It's been a frustrating day and this is the last thing you need.</p>
+                                
+                                <p><strong>Your Initial Response:</strong></p>
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-outline-primary scenario-btn" onclick="handleScenario('s2', 'blame')">
+                                        A) "Who's accountable for this? Why wasn't anyone paying attention?"
+                                    </button>
+                                    <button class="btn btn-outline-primary scenario-btn" onclick="handleScenario('s2', 'fix')">
+                                        B) "Just get it fixed and cleaned up so we can get back to normal"
+                                    </button>
+                                    <button class="btn btn-outline-primary scenario-btn" onclick="handleScenario('s2', 'learn')">
+                                        C) "Is anyone hurt? What can we learn to prevent this happening again?"
+                                    </button>
+                                    <button class="btn btn-outline-primary scenario-btn" onclick="handleScenario('s2', 'report')">
+                                        D) "Write up an incident report and schedule retraining"
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card bg-warning bg-opacity-25">
+                                    <div class="card-body">
+                                        <h6><i class="fas fa-exclamation-triangle me-2"></i>Key Factors:</h6>
+                                        <ul class="small">
+                                            <li>Human welfare first</li>
+                                            <li>Learning orientation</li>
+                                            <li>System understanding</li>
+                                            <li>Prevention mindset</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="s2-feedback"></div>
+                    </div>
+                    
+                    <div class="scenario-card">
+                        <h4><i class="fas fa-users me-2"></i>Scenario 3: The Collaborative Contract Supervisor</h4>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p><strong>Situation:</strong> During a routine audit, you discover an operator hasn't followed a checklist. The procedure was developed by managers with experience but not current operations knowledge. Workers gave suggestions during development but weren't really listened to. The published procedure came with warnings about punishment for non-compliance.</p>
+                                
+                                <p><strong>Your Approach:</strong></p>
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-outline-primary scenario-btn" onclick="handleScenario('s3', 'discipline')">
+                                        A) Issue disciplinary action for procedure violation
+                                    </button>
+                                    <button class="btn btn-outline-primary scenario-btn" onclick="handleScenario('s3', 'retrain')">
+                                        B) Schedule retraining on procedure compliance
+                                    </button>
+                                    <button class="btn btn-outline-primary scenario-btn" onclick="handleScenario('s3', 'collaborate')">
+                                        C) Work with operators to make the procedure practical and useful
+                                    </button>
+                                    <button class="btn btn-outline-primary scenario-btn" onclick="handleScenario('s3', 'ignore')">
+                                        D) Let it slide this time but monitor more closely
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card bg-success bg-opacity-25">
+                                    <div class="card-body">
+                                        <h6><i class="fas fa-handshake me-2"></i>Consider:</h6>
+                                        <ul class="small">
+                                            <li>Worker knowledge value</li>
+                                            <li>Practical procedures</li>
+                                            <li>Ownership and buy-in</li>
+                                            <li>Collaborative improvement</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="s3-feedback"></div>
+                    </div>
+                    
+                    <div class="interactive-card">
+                        <h5><i class="fas fa-chart-bar me-2"></i>Your Scenario Performance</h5>
+                        <canvas id="scenarioPerformanceChart" width="400" height="200"></canvas>
+                        <div class="mt-3">
+                            <div id="scenarioInsights"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Global Variables
+        let exploredCharacteristics = [];
+        let scenarioScores = { s1: null, s2: null, s3: null };
+        
+        // Initialize application
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize any startup functions
+        });
+        
+        // Theory Tab Functions
+        function showSystemsExample() {
+            const content = `
+                <div class="interactive-card">
+                    <h5><i class="fas fa-cogs me-2"></i>Systems Thinking Example</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Work as Imagined (WAI)</h6>
+                            <ul>
+                                <li>Clear procedures</li>
+                                <li>Risk assessments completed</li>
+                                <li>Proper tools available</li>
+                                <li>Adequate time allocated</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Work as Done (WAD)</h6>
+                            <ul class="text-danger">
+                                <li>Procedure doesn't match current layout</li>
+                                <li>Tools are awkward to use</li>
+                                <li>Time pressure from production</li>
+                                <li>Weather affects work surface</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="alert alert-info mt-3">
+                        <strong>Key Insight:</strong> The workforce always has to do the last part of the design of any task. Leaders who understand this collaborate with workers to bridge the WAI-WAD gap.
+                    </div>
+                </div>`;
+            document.getElementById('dynamicContent').innerHTML = content;
+        }
+        
+        function showHumanFactorsBreakdown() {
+            const content = `
+                <div class="interactive-card">
+                    <h5><i class="fas fa-brain me-2"></i>Human Factors: Performance Shaping Factors</h5>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h6 class="text-primary">Job Factors</h6>
+                            <ul>
+                                <li>Time available</li>
+                                <li>Control panel design</li>
+                                <li>Procedure clarity</li>
+                                <li>Tool ergonomics</li>
+                                <li>Workload</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-4">
+                            <h6 class="text-success">Personal Factors</h6>
+                            <ul>
+                                <li>Fatigue levels</li>
+                                <li>Experience/capability</li>
+                                <li>Stress levels</li>
+                                <li>Health status</li>
+                                <li>Motivation</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-4">
+                            <h6 class="text-warning">Organizational Factors</h6>
+                            <ul>
+                                <li>Role clarity</li>
+                                <li>Manning levels</li>
+                                <li>Communication systems</li>
+                                <li>Safety culture</li>
+                                <li>Management priorities</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="alert alert-success mt-3">
+                        <strong>Leadership Opportunity:</strong> Most of these factors can be influenced by effective safety leadership!
+                    </div>
+                </div>`;
+            document.getElementById('dynamicContent').innerHTML = content;
+        }
+        
+        function showSafetyTriangle() {
+            const content = `
+                <div class="interactive-card">
+                    <h5><i class="fas fa-triangle-exclamation me-2"></i>Rethinking the Safety Triangle</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Traditional View</h6>
+                            <p class="text-muted">Focus on high-frequency, low-severity events believing they predict major accidents</p>
+                            <div style="background: #f8f9fa; padding: 15px; border-radius: 5px;">
+                                <div style="background: #dc3545; color: white; padding: 5px; text-align: center; margin-bottom: 5px;">1 Major Accident</div>
+                                <div style="background: #ffc107; color: black; padding: 5px; text-align: center; margin-bottom: 5px;">10 Minor Injuries</div>
+                                <div style="background: #28a745; color: white; padding: 5px; text-align: center;">100 Near Misses</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Modern Understanding</h6>
+                            <p class="text-primary">Different types of events have different causes and require different controls</p>
+                            <ul>
+                                <li><strong>Process Safety Events:</strong> Rare but catastrophic</li>
+                                <li><strong>Personal Safety Events:</strong> More frequent but lower consequence</li>
+                                <li><strong>Leading Indicators:</strong> Proactive measures of barrier health</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="alert alert-info mt-3">
+                        <strong>Balanced Approach:</strong> Leaders need different strategies for different types of safety risks, not just focus on injury frequency.
+                    </div>
+                </div>`;
+            document.getElementById('dynamicContent').innerHTML = content;
+        }
+        
+        function toggleLeadershipStyle(style) {
+            const element = document.getElementById(style + '-details');
+            const bsCollapse = new bootstrap.Collapse(element);
+        }
+        
+        // LEAD Model Functions
+        function showLEADDetails(leadType) {
+            const details = {
+                leverage: {
+                    title: "LEVERAGE: Structure and Coordination",
+                    description: "Effective for routine work and low-risk environments",
+                    practices: [
+                        "Setting clear safety goals and priorities",
+                        "Clarifying roles and responsibilities",
+                        "Coordinating team safety activities",
+                        "Providing recognition and feedback",
+                        "Establishing safety standards and procedures"
+                    ],
+                    example: "Daily safety meetings, safety KPI tracking, standard operating procedures",
+                    when: "Use when work is predictable, risks are well-understood, and systems are stable"
+                },
+                energize: {
+                    title: "ENERGIZE: Inspiration and Empowerment",
+                    description: "Best for changing environments and new opportunities",
+                    practices: [
+                        "Inspiring and motivating team members",
+                        "Encouraging ownership and autonomy",
+                        "Fostering growth and development",
+                        "Promoting innovation in safety approaches",
+                        "Building enthusiasm for safety excellence"
+                    ],
+                    example: "Safety improvement campaigns, innovation challenges, empowerment initiatives",
+                    when: "Use during organizational changes, new projects, or when seeking safety innovations"
+                },
+                adapt: {
+                    title: "ADAPT: Flexibility and Learning",
+                    description: "Essential for non-routine operations and incident management",
+                    practices: [
+                        "Creating flexibility in safety responses",
+                        "Encouraging learning from mistakes",
+                        "Building resilience and recovery capabilities",
+                        "Fostering psychological safety for reporting",
+                        "Adapting to changing conditions"
+                    ],
+                    example: "Incident response, lessons learned sessions, adaptive safety procedures",
+                    when: "Use during emergencies, incidents, or when facing unexpected safety challenges"
+                },
+                defend: {
+                    title: "DEFEND: Vigilance and Protection",
+                    description: "Critical for high-risk work environments",
+                    practices: [
+                        "Monitoring safety performance closely",
+                        "Instilling accountability and vigilance",
+                        "Creating awareness of risks and consequences",
+                        "Implementing robust safety controls",
+                        "Maintaining defensive barriers"
+                    ],
+                    example: "High-risk work permits, safety inspections, hazard identification",
+                    when: "Use when risks are high, consequences severe, or when safety barriers are critical"
+                }
+            };
+            
+            const detail = details[leadType];
+            const content = `
+                <div class="interactive-card">
+                    <h4>${detail.title}</h4>
+                    <p class="lead">${detail.description}</p>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6><i class="fas fa-list me-2"></i>Key Practices</h6>
+                            <ul>
+                                ${detail.practices.map(practice => `<li>${practice}</li>`).join('')}
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6><i class="fas fa-lightbulb me-2"></i>Examples</h6>
+                            <p>${detail.example}</p>
+                            
+                            <h6><i class="fas fa-clock me-2"></i>When to Use</h6>
+                            <p>${detail.when}</p>
+                        </div>
+                    </div>
+                </div>`;
+            
+            document.getElementById('leadDetails').innerHTML = content;
+        }
+        
+        function assessSituation(situation) {
+            const situations = {
+                routine: {
+                    title: "Daily Operations Scenario",
+                    description: "Regular production activities with established procedures",
+                    recommended: "LEVERAGE",
+                    reasoning: "Routine work benefits from clear structure, defined roles, and consistent coordination. Focus on goal-setting and recognition."
+                },
+                change: {
+                    title: "Process Change Initiative",
+                    description: "Implementing new safety procedures and technologies",
+                    recommended: "ENERGIZE",
+                    reasoning: "Change requires inspiration and empowerment. Focus on motivating people and encouraging ownership of new approaches."
+                },
+                emergency: {
+                    title: "Emergency Response Situation",
+                    description: "Responding to an unexpected safety incident",
+                    recommended: "ADAPT",
+                    reasoning: "Emergencies require flexibility and learning. Focus on adapting to conditions and building resilience for recovery."
+                },
+                highrisk: {
+                    title: "High-Risk Work Environment",
+                    description: "Critical operations with potential for serious consequences",
+                    recommended: "DEFEND",
+                    reasoning: "High-risk work demands vigilance and protection. Focus on monitoring performance and maintaining robust safety barriers."
+                }
+            };
+            
+            const sit = situations[situation];
+            const content = `
+                <div class="alert alert-primary">
+                    <h6><i class="fas fa-scenario me-2"></i>${sit.title}</h6>
+                    <p>${sit.description}</p>
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <strong>Recommended Approach:</strong>
+                            <div class="badge bg-success fs-6 ms-2">${sit.recommended}</div>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Reasoning:</strong>
+                            <p class="mb-0">${sit.reasoning}</p>
+                        </div>
+                    </div>
+                </div>`;
+            
+            document.getElementById('situationAssessment').innerHTML = content;
+        }
+        
+        // 7 Characteristics Functions
+        function exploreCharacteristic(characteristic, element) {
+            if (!exploredCharacteristics.includes(characteristic)) {
+                exploredCharacteristics.push(characteristic);
+                updateProgress();
+            }
+            
+            // Update visual indicator
+            const statusElement = element.querySelector('.characteristic-status');
+            statusElement.innerHTML = '<i class="fas fa-check-circle text-success"></i> Explored';
+            
+            const characteristics = {
+                credibility: {
+                    title: "Credibility: Walking the Talk",
+                    description: "What leaders say is consistent with what they do",
+                    keyActions: [
+                        "Make yourself available in the field",
+                        "Develop healthy, trusting relationships",
+                        "Be honest and open with information",
+                        "Be visibly committed and courageous",
+                        "Serve your people",
+                        "Manage uncertainty and create learning environment"
+                    ],
+                    startHere: "Make yourself available in the field - this allows people to get to know you and understand the work",
+                    example: "A maintenance manager visits the production floor daily, listens to operator concerns about valve problems, and takes immediate action to investigate and fix systemic issues rather than blaming individuals.",
+                    pitfalls: [
+                        "Saying safety is priority #1 but compromising it for production",
+                        "Not being visible during difficult times",
+                        "Making commitments you can't keep"
+                    ]
+                },
+                action: {
+                    title: "Action Orientation: Making Things Happen",
+                    description: "Leaders act to address unsafe conditions and solve problems",
+                    keyActions: [
+                        "Act to support risk barriers and safeguards",
+                        "Act on facility integrity issues",
+                        "Take action to learn from events",
+                        "Use hierarchy of controls for sustainable solutions",
+                        "Follow up on implementation of actions"
+                    ],
+                    startHere: "Avoid immediately assigning blame when something goes wrong - try to understand the full context to prevent recurrence",
+                    example: "When receiving a call about a toxic leak, an operations manager first asks if anyone is hurt, then focuses on learning what system factors led to the event rather than seeking to blame individuals.",
+                    pitfalls: [
+                        "Reacting with blame before understanding context",
+                        "Focusing only on quick fixes instead of root causes",
+                        "Not following up on corrective actions"
+                    ]
+                },
+                vision: {
+                    title: "Vision: Painting the Picture of Excellence",
+                    description: "Leaders create a clear picture of safety excellence",
+                    keyActions: [
+                        "Provide a clear, positive vision for safety",
+                        "Communicate vision through words and actions",
+                        "Turn vision into improvement plans",
+                        "Monitor progress with leading and lagging indicators",
+                        "Avoid sole focus on numerical targets"
+                    ],
+                    startHere: "Talk about your vision for everybody to go home unharmed - focus on positive outcomes rather than zero targets",
+                    example: "Instead of focusing on 'zero injuries' (which can discourage reporting), a finance manager emphasizes 'everyone goes home safe' and explains this means caring for each other and working together.",
+                    pitfalls: [
+                        "Setting 'zero' targets that discourage reporting",
+                        "Not explaining the meaning behind safety goals",
+                        "Focusing only on lagging indicators"
+                    ]
+                },
+                accountability: {
+                    title: "Accountability: Ownership and Capability",
+                    description: "Leaders help people understand and deliver their safety responsibilities",
+                    keyActions: [
+                        "Help people understand their roles and responsibilities",
+                        "Ensure people have capability and resources",
+                        "Help people feel ownership for their roles",
+                        "Understand context when accountabilities aren't met",
+                        "Consider impact of organizational changes"
+                    ],
+                    startHere: "Assess the consequences of organizational change on people's understanding and ability to deliver accountability",
+                    example: "An engineering manager realizes that moving the engineering team 50 miles from the plant has created safety risks because operators can no longer easily access engineering expertise for operational problems.",
+                    pitfalls: [
+                        "Blaming individuals without understanding system constraints",
+                        "Not providing adequate resources for safety responsibilities",
+                        "Ignoring impact of organizational changes on safety roles"
+                    ]
+                },
+                communication: {
+                    title: "Communication: Creating Connection",
+                    description: "How leaders communicate shapes safety culture",
+                    keyActions: [
+                        "Practice active listening",
+                        "Be assertive with peers and senior leaders",
+                        "Use hierarchy of effectiveness for communication",
+                        "Adapt leadership style for effective communication",
+                        "Promote speak-up and reporting culture"
+                    ],
+                    startHere: "See how well imagined plans, documents, and management systems are actually operating in the field",
+                    example: "A drilling manager discovers that a comprehensive bridging document looks impressive on paper but isn't working in practice. She talks to all parties involved to understand the real situation and takes action to improve compliance.",
+                    pitfalls: [
+                        "Assuming written procedures are being followed",
+                        "Not listening to workforce concerns",
+                        "Communicating only downward, not upward to senior management"
+                    ]
+                },
+                collaboration: {
+                    title: "Collaboration: Working Together",
+                    description: "Active employee participation in safety solutions",
+                    keyActions: [
+                        "Engage managers at all levels",
+                        "Work for and with the team",
+                        "Develop key relationships and mutual collaboration",
+                        "Value workforce expertise and experience",
+                        "Create forums for meaningful participation"
+                    ],
+                    startHere: "Pick an improvement topic to collaborate with the workforce on",
+                    example: "A contract supervisor discovers that operators aren't following a checklist because it's impractical. Instead of disciplinary action, he organizes a workshop where managers, supervisors, and operators rewrite the procedure together, creating ownership and practical utility.",
+                    pitfalls: [
+                        "Developing procedures without workforce input",
+                        "Not valuing frontline expertise",
+                        "Using punishment instead of collaboration to address non-compliance"
+                    ]
+                },
+                feedback: {
+                    title: "Feedback & Recognition: Positive, Immediate, Certain",
+                    description: "Recognition that encourages safe behavior and builds culture",
+                    keyActions: [
+                        "Show genuine care for people's wellbeing",
+                        "Recognize good performance promptly",
+                        "Coach others in safety development",
+                        "Get feedback on your own performance",
+                        "Make recognition positive, immediate, and certain (PIC)"
+                    ],
+                    startHere: "Talk to people about what is working for them and what is not",
+                    example: "Leaders implement spot recognition for safety improvements, Excellence Awards for safety accomplishments, and regular feedback conversations to understand what's working and what needs improvement in the safety program.",
+                    pitfalls: [
+                        "Only giving feedback when things go wrong",
+                        "Making recognition too formal or delayed",
+                        "Not seeking feedback on your own leadership effectiveness"
+                    ]
+                }
+            };
+            
+            const char = characteristics[characteristic];
+            const content = `
+                <div class="interactive-card bg-light">
+                    <h4><i class="fas fa-star me-2"></i>${char.title}</h4>
+                    <p class="lead">${char.description}</p>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6><i class="fas fa-tasks me-2"></i>Key Actions</h6>
+                            <ul>
+                                ${char.keyActions.map(action => `<li>${action}</li>`).join('')}
+                            </ul>
+                            
+                            <div class="alert alert-success">
+                                <h6><i class="fas fa-play me-2"></i>Start Here</h6>
+                                <p class="mb-0">${char.startHere}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h6><i class="fas fa-lightbulb me-2"></i>Real Example</h6>
+                            <p>${char.example}</p>
+                            
+                            <h6><i class="fas fa-exclamation-triangle me-2"></i>Common Pitfalls</h6>
+                            <ul class="text-danger">
+                                ${char.pitfalls.map(pitfall => `<li>${pitfall}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                </div>`;
+            
+            document.getElementById('characteristicDetails').innerHTML = content;
+            
+            // Check if all characteristics explored
+            if (exploredCharacteristics.length === 7) {
+                showCharacteristicSummary();
+            }
+        }
+        
+        function updateProgress() {
+            const progress = (exploredCharacteristics.length / 7) * 100;
+            document.getElementById('characteristicProgress').style.width = progress + '%';
+            document.getElementById('progressText').textContent = 
+                `${exploredCharacteristics.length}/7 characteristics explored - ${Math.round(progress)}% complete`;
+        }
+        
+        function showCharacteristicSummary() {
+            const actionPlanHTML = `
+                <h6>Your Personalized Development Plan:</h6>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card bg-primary text-white">
+                            <div class="card-body">
+                                <h6>Foundation Building</h6>
+                                <ul class="small">
+                                    <li>Make yourself visible in the field</li>
+                                    <li>Listen to understand, not to judge</li>
+                                    <li>Focus on system improvements</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card bg-success text-white">
+                            <div class="card-body">
+                                <h6>Culture Development</h6>
+                                <ul class="small">
+                                    <li>Collaborate on procedure improvements</li>
+                                    <li>Recognize positive safety behaviors</li>
+                                    <li>Promote speak-up culture</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card bg-warning text-dark">
+                            <div class="card-body">
+                                <h6>Continuous Improvement</h6>
+                                <ul class="small">
+                                    <li>Seek feedback on your leadership</li>
+                                    <li>Adapt your style to situations</li>
+                                    <li>Learn from every incident</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+            
+            document.getElementById('actionPlan').innerHTML = actionPlanHTML;
+            document.getElementById('characteristicSummary').style.display = 'block';
+        }
+        
+        function generateCertificate() {
+            alert('Certificate of Completion generated! You have successfully explored all 7 Safety Leadership Characteristics. Continue to the scenarios to complete your learning journey.');
+        }
+        
+        // Scenario Functions
+        function handleScenario(scenarioId, choice) {
+            const scenarios = {
+                s1: {
+                    correct: 'investigate',
+                    feedback: {
+                        dismiss: {
+                            type: 'danger',
+                            title: 'Missed Opportunity',
+                            message: 'Dismissing worker concerns damages credibility and trust. This approach discourages future speak-up and misses critical system issues that could lead to serious incidents.'
+                        },
+                        investigate: {
+                            type: 'success',
+                            title: 'Excellent Leadership!',
+                            message: 'You demonstrated credibility by listening, action orientation by investigating, and collaboration by working with operators. This approach builds trust and addresses systemic issues that prevent incidents.'
+                        },
+                        blame: {
+                            type: 'warning',
+                            title: 'System vs. Individual Focus',
+                            message: 'Focusing on individual compliance misses the system issues. The operators are adapting to faulty equipment - the leadership opportunity is to fix the underlying valve problems.'
+                        },
+                        training: {
+                            type: 'warning',
+                            title: 'Training Won\'t Fix System Issues',
+                            message: 'More training won\'t solve equipment problems. This response doesn\'t address the root cause and may signal that you don\'t understand the real issues workers face.'
+                        }
+                    }
+                },
+                s2: {
+                    correct: 'learn',
+                    feedback: {
+                        blame: {
+                            type: 'danger',
+                            title: 'Blame Shuts Down Learning',
+                            message: 'Immediately seeking blame prevents learning and discourages reporting. This response will make people less likely to surface problems early when they can still be prevented.'
+                        },
+                        fix: {
+                            type: 'warning',
+                            title: 'Quick Fix Misses Prevention',
+                            message: 'Just fixing and cleaning up doesn\'t prevent recurrence. Without learning what allowed this to happen, the same type of incident is likely to occur again.'
+                        },
+                        learn: {
+                            type: 'success',
+                            title: 'Learning-Oriented Leadership!',
+                            message: 'You prioritized human welfare first, then focused on learning to prevent recurrence. This approach encourages reporting and builds systematic understanding of how to prevent similar events.'
+                        },
+                        report: {
+                            type: 'warning',
+                            title: 'Administrative Response',
+                            message: 'While documentation is important, focusing on reports and retraining without understanding why the situation occurred misses the opportunity for systematic improvement.'
+                        }
+                    }
+                },
+                s3: {
+                    correct: 'collaborate',
+                    feedback: {
+                        discipline: {
+                            type: 'danger',
+                            title: 'Punishment Discourages Improvement',
+                            message: 'Disciplinary action for following an impractical procedure destroys trust and ensures future problems won\'t be surfaced. This approach makes the workplace less safe.'
+                        },
+                        retrain: {
+                            type: 'warning',
+                            title: 'Training Won\'t Fix Poor Procedures',
+                            message: 'Retraining on an impractical procedure doesn\'t solve the underlying problem. Workers will continue to work around unusable procedures, creating safety risks.'
+                        },
+                        collaborate: {
+                            type: 'success',
+                            title: 'Collaborative Excellence!',
+                            message: 'You recognized the value of worker knowledge and chose collaboration over control. This approach creates practical procedures that people will actually follow because they helped design them.'
+                        },
+                        ignore: {
+                            type: 'warning',
+                            title: 'Inconsistent Leadership',
+                            message: 'Ignoring the issue while planning to monitor more closely sends mixed messages and doesn\'t address the fundamental problem with the procedure\'s practicality.'
+                        }
+                    }
+                }
+            };
+            
+            const scenario = scenarios[scenarioId];
+            const feedback = scenario.feedback[choice];
+            
+            // Record score
+            scenarioScores[scenarioId] = choice === scenario.correct ? 100 : 0;
+            
+            const alertClass = feedback.type === 'success' ? 'alert-success' : 
+                              feedback.type === 'danger' ? 'alert-danger' : 'alert-warning';
+            
+            const feedbackHTML = `
+                <div class="alert ${alertClass} mt-3">
+                    <h6><i class="fas fa-${feedback.type === 'success' ? 'check-circle' : 
+                                        feedback.type === 'danger' ? 'times-circle' : 'info-circle'} me-2"></i>${feedback.title}</h6>
+                    <p>${feedback.message}</p>
+                </div>`;
+            
+            document.getElementById(scenarioId + '-feedback').innerHTML = feedbackHTML;
+            
+            // Disable buttons for this scenario
+            const scenarioButtons = document.querySelectorAll(`#s${scenarioId.charAt(1)}-feedback`).forEach(el => {
+                if (el.previousElementSibling) {
+                    const buttons = el.previousElementSibling.querySelectorAll('button');
+                    buttons.forEach(btn => btn.disabled = true);
+                }
+            });
+            
+            updateScenarioChart();
+        }
+        
+        function updateScenarioChart() {
+            // Check if all scenarios completed
+            const completed = Object.values(scenarioScores).filter(score => score !== null);
+            if (completed.length === 3) {
+                const ctx = document.getElementById('scenarioPerformanceChart');
+                if (ctx) {
+                    new Chart(ctx, {
+                        type: 'radar',
+                        data: {
+                            labels: ['Credibility\n(Maintenance)', 'Action Orientation\n(Operations)', 'Collaboration\n(Contract)'],
+                            datasets: [{
+                                label: 'Your Performance',
+                                data: [scenarioScores.s1, scenarioScores.s2, scenarioScores.s3],
+                                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                pointBackgroundColor: 'rgba(54, 162, 235, 1)',
+                                pointBorderColor: '#fff',
+                                pointHoverBackgroundColor: '#fff',
+                                pointHoverBorderColor: 'rgba(54, 162, 235, 1)'
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                r: {
+                                    beginAtZero: true,
+                                    max: 100,
+                                    ticks: { stepSize: 25 }
+                                }
+                            }
+                        }
+                    });
+                    
+                    // Show insights
+                    const avgScore = completed.reduce((a, b) => a + b, 0) / completed.length;
+                    const insights = `
+                        <div class="alert alert-info">
+                            <h6><i class="fas fa-chart-line me-2"></i>Your Scenario Performance</h6>
+                            <p><strong>Average Score:</strong> ${Math.round(avgScore)}%</p>
+                            <p><strong>Key Insight:</strong> ${avgScore >= 75 ? 
+                                'Excellent! You demonstrate strong safety leadership intuition.' :
+                                avgScore >= 50 ?
+                                'Good foundation. Continue developing your situational awareness.' :
+                                'Focus on understanding systems thinking and people-centered approaches.'}</p>
+                        </div>`;
+                    document.getElementById('scenarioInsights').innerHTML = insights;
+                }
+            }
+        }
+    </script>
+</body>
+</html>
+                
